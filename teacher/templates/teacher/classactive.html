@@ -1,0 +1,223 @@
+{% extends "base-4.1.1.html" %}
+{% load static %}
+
+{% block custom_css %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+{% endblock %}
+{% block title %}
+    教师个人课表
+{% endblock %}
+
+{% block content %}
+    <nav class="navbar navbar-expand-sm navbar-dark bg-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">洛师电商</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#Navbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="Navbar">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{% url 'teacher:index' %}">
+                            首页
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{% url 'teacher:coursetable' %}">
+                            教师课表
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'teacher:active' %}">
+                            课堂活动
+                        </a>
+                    </li>
+                </ul>
+                <span class="navbar-text">
+                    {% if request.user.is_authenticated %}
+                        {{ request.user.username }},
+                        <a data-toggle="modal" data-target="#loginModal">
+                            退出
+                        </a>
+                    {% else %}
+                    <a href="{% url 'teacher:login' %}">
+                        登录
+                    </a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+    </nav>
+    <div id="loginModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg" role="content">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">退出登录</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'teacher:logout' %}" method="post">
+                        <div class="form-group row">
+
+                            <div class="col-sm-10">
+                                <p>您将退出登录状态！</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-12 d-flex justify-content-end">
+                                <button type="button" class="btn btn-secondary btn-sm mr-3" data-dismiss="modal">取消</button>
+                                <button type="submit" class="btn btn-primary btn-sm mr-3">确定</button>
+                            </div>
+                        </div>
+                        {% csrf_token %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row mt-5 mb-5">
+            <div class="col-12 col-sm-4">
+                <div class="card">
+                    <div class="card-header">
+                        <img src="{% static 'img/book.jpg' %}" width="100%">
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <tr>
+                                <td>课程名称</td>
+                                <td>概率统计</td>
+                            </tr>
+                            <tr>
+                                <td>上课班级</td>
+                                <td>2016级电子商务, 共150人</td>
+                            </tr>
+                            <tr>
+                                <td>上课地点</td>
+                                <td>G1-202</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-8">
+                <div class="card">
+                    <h3 class="card-header bg-primary text-white">教学活动</h3>
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group row">
+                                <label for="colFormLabelSm"
+                                       class="col-sm-2 col-form-label">活动名称</label>
+                                <div class="col-sm-10">
+                                    <select class="custom-select" id="colFormLabelSm">
+                                        <option selected>选择一项活动...</option>
+                                        <option value="1">考勤</option>
+                                        <option value="2">课堂提问</option>
+                                        <option value="3">检查作业</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <legend class="col-form-label col-sm-2 pt-0">活动方式</legend>
+                                <div class="col-sm-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                               id="inlineRadio1" value="option1" unchecked>
+                                        <label class="form-check-label" for="inlineRadio1">指定学生</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                               id="inlineRadio2" value="option2" unchecked>
+                                        <label class="form-check-label" for="inlineRadio2">随机抽查</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row d-none" id="stugroup1" >
+                                <label for="colFormLabelSm"
+                                       class="col-sm-2 col-form-label">学生姓名</label>
+                                <div class="col-sm-10">
+                                    <div class="row">
+                                        <div class="col-sm-8">
+                                            <input type="text" readonly class="form-control-plaintext" id="stuname1" value="张三">
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" id="stuscore1" placeholder="给定成绩">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-8">
+                                            <input type="text" readonly class="form-control-plaintext" id="stuname2" value="李四">
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" id="stuscore2" placeholder="给定成绩">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-8">
+                                            <input type="text" readonly class="form-control-plaintext" id="stuname3" value="王五">
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" id="stuscore3" placeholder="给定成绩">
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="form-group row d-none" id="stugroup2">
+                                <label for="colFormLabelSm"
+                                       class="col-sm-2 col-form-label">学生姓名</label>
+                                <div class="col-sm-10">
+                                    <div class="row">
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" id="stuname" placeholder="学生姓名">
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" id="stuscore" placeholder="给定成绩">
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="form-group row d-none" id="subbtn">
+                                <div class="offset-sm-2 col-sm-10">
+                                    <input type="submit" class="btn btn-primary" value="提交">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center p-2" >
+                    <p >@Copyright 2018-2020</p>
+                    <p >洛阳师范学院电子商务学院 HQ开发组</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+{% endblock %}
+{% block domready %}
+<script>
+    $(document).ready(function () {
+       $('#inlineRadio1').click(function () {
+           $('#stugroup2').removeClass('d-none')
+           $('#stugroup1').addClass('d-none')
+           $('#subbtn').removeClass('d-none')
+       });
+       $('#inlineRadio2').click(function () {
+           $('#stugroup1').removeClass('d-none')
+           $('#stugroup2').addClass('d-none')
+           $('#subbtn').removeClass('d-none')
+       })
+    })
+</script>
+{% endblock %}

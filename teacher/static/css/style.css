@@ -1,0 +1,54 @@
+.row-header{
+    margin: 0px auto;
+    padding: 0;
+}
+
+.row-content{
+    margin: 0px auto;
+    padding: 0px 0px 20px 0px;
+}
+
+.footer{
+    background-color: #e9ecef;
+    margin: 0px auto;
+    padding: 29px 0px 20px 0px;
+}
+address{
+    font-size:80%;
+    margin:0px;
+    color:#0f0f0f;
+}
+body{
+    padding:50px 0px 0px 0px;
+    z-index: 0;
+}
+
+
+.tab-content{
+    border-left:1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+}
+a{
+    cursor: pointer;
+}
+.carousel {
+    background:#007bff;
+}
+
+.carousel-item {
+  height: 300px;
+}
+
+.carousel-item img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-height: 300px;
+}
+#carouselButton {
+    right:0px;
+    position: absolute;
+    bottom: 0px;
+}
