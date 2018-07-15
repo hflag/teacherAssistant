@@ -37,11 +37,11 @@
                     {% if request.user.is_authenticated %}
                         {{ request.user.username }},
                         <a data-toggle="modal" data-target="#loginModal">
-                            Logout
+                            退出
                         </a>
                     {% else %}
                     <a href="{% url 'teacher:login' %}">
-                        Login
+                        登录
                     </a>
                     {% endif %}
                 </span>

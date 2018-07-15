@@ -126,3 +126,7 @@ STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = reverse_lazy('teacher:index')
 LOGIN_URL = reverse_lazy('teacher:login')
 LOGOUT_URL = reverse_lazy('teacher:logout')
+
+# for media
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')

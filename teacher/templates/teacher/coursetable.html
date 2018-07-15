@@ -38,11 +38,11 @@
                     {% if request.user.is_authenticated %}
                         {{ request.user.username }},
                         <a data-toggle="modal" data-target="#loginModal">
-                            Logout
+                            退出
                         </a>
                     {% else %}
                     <a href="{% url 'teacher:login' %}">
-                        Login
+                        登录
                     </a>
                     {% endif %}
                 </span>
@@ -113,7 +113,7 @@
                         <td>一</td>
                         {% for c in ones %}
                             {% if c %}
-                                <td>{{ c.course_name }},{{ c.room_name }},<span class="d-none d-sm-block"> {{ c.class_name }}</span></td>
+                                <td>{{ c.course.name }},{{ c.room_name }},<span class="d-none d-sm-block"> {{ c.banji.name }}</span></td>
                             {% else %}
                                 <td>*</td>
                             {% endif %}
@@ -124,7 +124,7 @@
                         <td>二</td>
                         {% for c in twos %}
                             {% if c %}
-                                <td>{{ c.course_name }}, {{ c.room_name }},<span class="d-none d-sm-block"> {{ c.class_name }}</span></td>
+                                <td>{{ c.course.name }}, {{ c.room_name }},<span class="d-none d-sm-block"> {{ c.banji.name }}</span></td>
                             {% else %}
                                 <td>*</td>
                             {% endif %}
@@ -135,7 +135,7 @@
                         <td >三</td>
                         {% for c in threes %}
                             {% if c %}
-                                <td>{{ c.course_name }}, {{ c.room_name }}, <span class="d-none d-sm-block"> {{ c.class_name }}</span></td>
+                                <td>{{ c.course.name }}, {{ c.room_name }}, <span class="d-none d-sm-block"> {{ c.banji.name }}</span></td>
                             {% else %}
                                 <td>*</td>
                             {% endif %}
@@ -146,7 +146,7 @@
                         <td>四</td>
                         {% for c in fours %}
                             {% if c %}
-                                <td>{{ c.course_name }}, {{ c.room_name }}, <span class="d-none d-sm-block"> {{ c.class_name }}</span></td>
+                                <td>{{ c.course.name }}, {{ c.room_name }}, <span class="d-none d-sm-block"> {{ c.banji.name }}</span></td>
                             {% else %}
                                 <td>*</td>
                             {% endif %}
@@ -157,7 +157,7 @@
                         <td>五</td>
                         {% for c in fives %}
                             {% if c %}
-                                <td>{{ c.course_name }}, {{ c.room_name }}, <span class="d-none d-sm-block"> {{ c.class_name }}</span></td>
+                                <td>{{ c.course.name }}, {{ c.room_name }}, <span class="d-none d-sm-block"> {{ c.banji.name }}</span></td>
                             {% else %}
                                 <td>*</td>
                             {% endif %}
@@ -168,7 +168,7 @@
                         <td >六</td>
                         {% for c in sixes %}
                             {% if c %}
-                                <td>{{ c.course_name }}, {{ c.room_name }}, <span class="d-none d-sm-block"> {{ c.class_name }}</span></td>
+                                <td>{{ c.course.name }}, {{ c.room_name }}, <span class="d-none d-sm-block"> {{ c.banji.name }}</span></td>
                             {% else %}
                                 <td>*</td>
                             {% endif %}

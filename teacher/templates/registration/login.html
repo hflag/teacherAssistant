@@ -1,4 +1,5 @@
 {% extends "base-4.1.1.html" %}
+{% load custom_css %}
 {% load static %}
 
 {% block custom_css %}
@@ -48,16 +49,41 @@
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container mt-3 mb-3">
         <div class="row">
-            <div class="col-12">
-                <form action="{% url 'teacher:login' %}" method="post">
-        {{ form.as_p }}
-        {% csrf_token %}
-        <input type="hidden" name="next" value="{{ next }}"/>
-        <p><input type="submit" value="Log-in"></p>
-    </form>
+            <div class="col-12 col-sm-3"></div>
+            <div class="col-12 col-sm-6">
+                <div class="card">
+                    <img class="card-img-top" src="{% static 'img/title.jpg' %}">
+                    <div class="card-body">
+                        <h5 class="card-title" style="text-align: center">用户登录</h5>
+                        <form action="{% url 'teacher:login' %}" method="post">
+                            <div class="form-group row fieldWrapper">
+                                <label for="{{ form.username.id_for_label }}" class="col-sm-2 col-form-label">账号</label>
+                                <div class="col-sm-10">
+                                    {{ form.username|addclass:"form-control" }}
+                                </div>
+                            </div>
+                            <div class="form-group row fieldWrapper">
+                                <label for="{{ form.password.id_for_label }}" class="col-sm-2 col-form-label">密码</label>
+                                <div class="col-sm-10">
+                                    {{ form.password|addclass:"form-control" }}
+                                </div>
+
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-10 offset-sm-2">
+                                     <input type="submit" value="登  录" class="btn btn-primary">
+                                </div>
+                            </div>
+                            <input type="hidden" name="next" value="{{ next }}" />
+                            {% csrf_token %}
+                        </form>
+                    </div>
+                </div>
+
             </div>
+            <div class="col-12 col-sm-3"></div>
         </div>
     </div>
     <footer class="footer ">

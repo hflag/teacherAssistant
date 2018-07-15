@@ -6,7 +6,7 @@
 
 {% endblock %}
 {% block title %}
-    教师个人课表
+    课堂活动
 {% endblock %}
 
 {% block content %}
@@ -83,41 +83,63 @@
         <div class="row mt-5 mb-5">
             <div class="col-12 col-sm-4">
                 <div class="card">
-                    <div class="card-header">
-                        <img src="{% static 'img/book.jpg' %}" width="100%">
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-bordered">
-                            <tr>
-                                <td>课程名称</td>
-                                <td>概率统计</td>
-                            </tr>
-                            <tr>
-                                <td>上课班级</td>
-                                <td>2016级电子商务, 共150人</td>
-                            </tr>
-                            <tr>
-                                <td>上课地点</td>
-                                <td>G1-202</td>
-                            </tr>
-                        </table>
-                    </div>
+                    {% if not before_course %}
+                        <div class="card-header">
+                            <img src="{% static 'img/hi.jpg' %}" width="100%">
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td>课程名称</td>
+                                    <td>休息中...</td>
+                                </tr>
+                                <tr>
+                                    <td>上课班级</td>
+                                    <td>休息中...</td>
+                                </tr>
+                                <tr>
+                                    <td>上课地点</td>
+                                    <td>休息中...</td>
+                                </tr>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="card-header">
+                            <img src="{{ before_course.course.image.url }}" width="100%">
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td>课程名称</td>
+                                    <td>{{ before_course.course.name }}</td>
+                                </tr>
+                                <tr>
+                                    <td>上课班级</td>
+                                    <td>{{ before_course.banji.name }}</td>
+                                </tr>
+                                <tr>
+                                    <td>上课地点</td>
+                                    <td>{{ before_course.room_name }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
             <div class="col-12 col-sm-8">
                 <div class="card">
                     <h3 class="card-header bg-primary text-white">教学活动</h3>
                     <div class="card-body">
-                        <form>
+                        <form id="activeform">
                             <div class="form-group row">
                                 <label for="colFormLabelSm"
                                        class="col-sm-2 col-form-label">活动名称</label>
                                 <div class="col-sm-10">
-                                    <select class="custom-select" id="colFormLabelSm">
-                                        <option selected>选择一项活动...</option>
-                                        <option value="1">考勤</option>
-                                        <option value="2">课堂提问</option>
-                                        <option value="3">检查作业</option>
+                                    <select class="custom-select" id="colFormLabelSm" name="act_name">
+                                        <option value="0" selected>选择一项活动...</option>
+                                        <option value="考勤">考勤</option>
+                                        <option value="课堂提问">课堂提问</option>
+                                        <option value="检查作业">检查作业</option>
                                     </select>
                                 </div>
                             </div>
@@ -140,30 +162,16 @@
                                 <label for="colFormLabelSm"
                                        class="col-sm-2 col-form-label">学生姓名</label>
                                 <div class="col-sm-10">
+                                    {% for s in students %}
                                     <div class="row">
                                         <div class="col-sm-8">
-                                            <input type="text" readonly class="form-control-plaintext" id="stuname1" value="张三">
+                                            <input type="text" readonly class="form-control-plaintext" name="stu{{ forloop.counter }}" value="{{ s.name }}">
                                         </div>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="stuscore1" placeholder="给定成绩">
+                                            <input type="text" class="form-control" name="sco{{ forloop.counter }}" placeholder="给定成绩">
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-sm-8">
-                                            <input type="text" readonly class="form-control-plaintext" id="stuname2" value="李四">
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="stuscore2" placeholder="给定成绩">
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-8">
-                                            <input type="text" readonly class="form-control-plaintext" id="stuname3" value="王五">
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="stuscore3" placeholder="给定成绩">
-                                        </div>
-                                    </div>
+                                    {% endfor %}
 
                                 </div>
                             </div>
@@ -171,22 +179,25 @@
                                 <label for="colFormLabelSm"
                                        class="col-sm-2 col-form-label">学生姓名</label>
                                 <div class="col-sm-10">
-                                    <div class="row">
-                                        <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="stuname" placeholder="学生姓名">
+                                    {% for x in '12345' %}
+                                        <div class="row">
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" name="name{{ forloop.counter }}" placeholder="学生姓名">
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control" name="score{{ forloop.counter }}" placeholder="给定成绩">
+                                            </div>
                                         </div>
-                                        <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="stuscore" placeholder="给定成绩">
-                                        </div>
-                                    </div>
-
+                                    {% endfor %}
                                 </div>
                             </div>
                             <div class="form-group row d-none" id="subbtn">
                                 <div class="offset-sm-2 col-sm-10">
-                                    <input type="submit" class="btn btn-primary" value="提交">
+                                    <input type="button" id="btn_active" class="btn btn-primary" value="提交">
                                 </div>
                             </div>
+                            <input type="hidden" name="banji" value="{{ before_course.banji.name }}">
+                        {% csrf_token %}
                         </form>
                     </div>
                 </div>
@@ -209,15 +220,55 @@
 <script>
     $(document).ready(function () {
        $('#inlineRadio1').click(function () {
+           if ($('#colFormLabelSm').val()==0){
+
+               $('#colFormLabelSm').focus()
+
+               return
+           }
            $('#stugroup2').removeClass('d-none')
            $('#stugroup1').addClass('d-none')
+
            $('#subbtn').removeClass('d-none')
        });
        $('#inlineRadio2').click(function () {
+           if ($('#colFormLabelSm').val()==0){
+
+               $('#colFormLabelSm').focus()
+
+               return
+           }
            $('#stugroup1').removeClass('d-none')
            $('#stugroup2').addClass('d-none')
+
            $('#subbtn').removeClass('d-none')
        })
+       $('#colFormLabelSm').change(function () {
+           var radios = $("input[type='radio']");
+           for (i=0;i<radios.length;i++){
+               if(radios[i].checked){
+                   radios[i].checked =false
+               }
+           }
+       })
+
+       $('#btn_active').click(function () {
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: "{% url 'teacher:active' %}",
+                    data: $('#activeform').serialize(),
+                    async: true,
+                    success: function (data) {
+                        if(data.status == 'success'){
+                            $('#activeform')[0].reset();
+                            alert("提交成功")
+                        }else if(data.status == 'fail'){
+                            alert("提交失败")
+                        }
+                    }
+                })
+            })
     })
 </script>
 {% endblock %}

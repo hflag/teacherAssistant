@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table>
+    <tr>
+        <td>学号</td>
+        <td>姓名</td>
+        {% for act in acts %}
+            <td>{{ act.title }}({{ act.created|date:"d/m" }})</td>
+        {% endfor %}
+    </tr>
+    {% for ss in stuactscore %}
+        <tr>
+            {% for d in ss %}
+                <td>{{ d }}</td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>
