@@ -262,12 +262,14 @@ class SummaryView(View):
         #     b = get_object_or_404(Banji, name=banji)
         #     students = b.student_set.all()
 
-        return render(request, 'teacher/summaryscore.html', {'classCourese': classCourse})
+        return render(request, 'teacher/summaryscore.html', {'classCourese': classCourse,
+                                                             'coursename': coursename})
 
 
 class ClassStudentActScoreView(View):
-    def get(self, request, banji_name):
+    def get(self, request, banji_name, scorename):
         banji = get_object_or_404(Banji, name=banji_name)
+        scorename=scorename
         students = banji.student_set.all()
         acts = banji.act_set.all()
 
@@ -285,10 +287,7 @@ class ClassStudentActScoreView(View):
                     temp.append(0)
             stuactscore.append(temp)
 
-        # studentactives = dict()
-        # for s in students:
-        #     ss = s.studentactscore_set.all()
-        #     studentactives[s] = ss
-
         return render(request, 'teacher/classscore.html', {'students': students, 'acts': acts,
-                                                           'stuactscore': stuactscore})
+                                                           'stuactscore': stuactscore,
+                                                           'banji': banji,
+                                                           'coursename': scorename})

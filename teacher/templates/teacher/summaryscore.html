@@ -28,9 +28,14 @@
                             教师课表
                         </a>
                     </li>
-                    <li class="nav-item active">
+                    <li class="nav-item ">
                         <a class="nav-link" href="{% url 'teacher:active' %}">
                             课堂活动
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'teacher:summary' %}">
+                            成绩汇总
                         </a>
                     </li>
                 </ul>
@@ -101,7 +106,7 @@
                                     <th scope="row">{{ forloop.counter }}</th>
                                     <td>{{ k }}</td>
                                     <td>{{ v }}</td>
-                                    <td><a href="{% url 'teacher:score' k %}">查看</a> </td>
+                                    <td><a href="{% url 'teacher:score' k v %}">查看</a> </td>
                                 </tr>
                             {% endfor %}
                             </tbody>

@@ -14,5 +14,5 @@ urlpatterns = [
     path('logout-then-login/', auth_views.logout_then_login, name='logou_then_login'),
     path('ask/', views.CustomerAskView.as_view(), name='ask'),
     path('summary/', views.SummaryView.as_view(), name='summary'),
-    path('score/<str:banji_name>/', views.ClassStudentActScoreView.as_view(), name='score'),
+    path('score/<str:banji_name>/<str:scorename>/', views.ClassStudentActScoreView.as_view(), name='score'),
 ]

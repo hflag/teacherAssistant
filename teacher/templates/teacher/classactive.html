@@ -33,6 +33,11 @@
                             课堂活动
                         </a>
                     </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{% url 'teacher:summary' %}">
+                            成绩汇总
+                        </a>
+                    </li>
                 </ul>
                 <span class="navbar-text">
                     {% if request.user.is_authenticated %}
@@ -179,7 +184,7 @@
                                 <label for="colFormLabelSm"
                                        class="col-sm-2 col-form-label">学生姓名</label>
                                 <div class="col-sm-10">
-                                    {% for x in '12345' %}
+                                    {% for x in '123' %}
                                         <div class="row">
                                             <div class="col-sm-8">
                                                 <input type="text" class="form-control" name="name{{ forloop.counter }}" placeholder="学生姓名">
