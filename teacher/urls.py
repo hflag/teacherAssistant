@@ -15,4 +15,5 @@ urlpatterns = [
     path('ask/', views.CustomerAskView.as_view(), name='ask'),
     path('summary/', views.SummaryView.as_view(), name='summary'),
     path('score/<str:banji_name>/<str:scorename>/', views.ClassStudentActScoreView.as_view(), name='score'),
+    path('export2excel/<str:banji_name>/<str:scorename>/', views.export_to_excel, name='export2excel'),
 ]

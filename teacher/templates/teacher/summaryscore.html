@@ -101,13 +101,15 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {% for k, v in classCourese.items %}
+                            {% for ts in t_schedules %}
+                                {% with banji_name=ts.banji__name course_name=ts.course__name %}
                                 <tr>
                                     <th scope="row">{{ forloop.counter }}</th>
-                                    <td>{{ k }}</td>
-                                    <td>{{ v }}</td>
-                                    <td><a href="{% url 'teacher:score' k v %}">查看</a> </td>
+                                    <td>{{ banji_name }}</td>
+                                    <td>{{ course_name }}</td>
+                                    <td><a href="{% url 'teacher:score' banji_name course_name %}">查看</a> </td>
                                 </tr>
+                                {% endwith %}
                             {% endfor %}
                             </tbody>
                         </table>

@@ -3,6 +3,11 @@
 
 {% block custom_css %}
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <style media="print" type="text/css">
+        .noprint{
+            visibility: hidden;
+        }
+    </style>
 {% endblock %}
 {% block title %}
     教师个人助理 - 首页
@@ -37,9 +42,9 @@
 
                 </tbody>
             </table>
-                    <a href="{% url 'teacher:summary' %}" class="btn btn-primary">返回</a>
-                    <a href="#" onclick="window.print();" class="btn btn-primary">打印</a>
-
+                    <a href="{% url 'teacher:summary' %}" class="btn btn-primary noprint">返回</a>
+                    <a href="#" onclick="window.print();" class="btn btn-primary noprint">打印</a>
+                    <a href="{% url 'teacher:export2excel' banji_name scorename %}" class="btn btn-primary noprint">导出excel</a>
                 </div>
 
             </div>

@@ -2,9 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import View
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 import time
 import random
+from openpyxl import Workbook
+from openpyxl.styles import Font, Alignment
 
 from .models import Schedule, Student, Act, StudentActScore, Banji
 from .forms import CustomerForm
@@ -19,12 +21,20 @@ class ClassActive(LoginRequiredMixin, View):
     def post(self, request):
         act_name = request.POST.get('act_name')
         banji_name = request.POST.get('banji')
-        stu_name1 = request.POST.get('stu1')
-        stu_name2 = request.POST.get('stu2')
-        stu_name3 = request.POST.get('stu3')
-        score1 = request.POST.get('sco1')
-        score2 = request.POST.get('sco2')
-        score3 = request.POST.get('sco3')
+        if request.POST['inlineRadioOptions']=='option1':
+            stu_name1 = request.POST.get('name1')
+            stu_name2 = request.POST.get('name2')
+            stu_name3 = request.POST.get('name3')
+            score1 = request.POST.get('score1')
+            score2 = request.POST.get('score2')
+            score3 = request.POST.get('score3')
+        else:
+            stu_name1 = request.POST.get('stu1')
+            stu_name2 = request.POST.get('stu2')
+            stu_name3 = request.POST.get('stu3')
+            score1 = request.POST.get('sco1')
+            score2 = request.POST.get('sco2')
+            score3 = request.POST.get('sco3')
 
         if act_name and banji_name and stu_name1 and stu_name2 and stu_name3 and score1 and score2 and score3:
             banji = Banji.objects.get(name=banji_name)
@@ -244,26 +254,13 @@ class CustomerAskView(View):
             return JsonResponse({'status': 'fail', 'msg': '提交出错了'})
 
 
-class SummaryView(View):
+class SummaryView(LoginRequiredMixin, View):
     def get(self, request):
-        bs = Banji.objects.all()
-        classCourse = dict()
-        for b in bs:
-            s = Schedule.objects.filter(banji=b)[0]
-            classname = b.name
-            coursename = s.course.name
-            classCourse[classname] = coursename
 
-        # # 获取参数班级（banji)
-        # banji = request.GET.get('banji')
-        # students = None
-        #
-        # if banji:
-        #     b = get_object_or_404(Banji, name=banji)
-        #     students = b.student_set.all()
+        t_schedules = Schedule.objects.filter(teacher=request.user)
+        t_schedules = t_schedules.values('banji__name', 'course__name').distinct()
 
-        return render(request, 'teacher/summaryscore.html', {'classCourese': classCourse,
-                                                             'coursename': coursename})
+        return render(request, 'teacher/summaryscore.html', {'t_schedules': t_schedules})
 
 
 class ClassStudentActScoreView(View):
@@ -279,7 +276,6 @@ class ClassStudentActScoreView(View):
             temp.append(stu.No)
             temp.append(stu.name)
             for act in acts:
-
                 try:
                     stuact = StudentActScore.objects.get(student=stu, act=act)
                     temp.append(stuact.score)
@@ -290,4 +286,59 @@ class ClassStudentActScoreView(View):
         return render(request, 'teacher/classscore.html', {'students': students, 'acts': acts,
                                                            'stuactscore': stuactscore,
                                                            'banji': banji,
-                                                           'coursename': scorename})
+                                                           'coursename': scorename,
+                                                           'banji_name': banji_name,
+                                                           'scorename': scorename})
+
+
+def export_to_excel(request,banji_name, scorename):
+    banji = get_object_or_404(Banji, name=banji_name)
+    scorename = scorename
+    students = banji.student_set.all()
+    acts = banji.act_set.all()
+
+    stuactscore = []
+    for stu in students:
+        temp = []
+        temp.append(stu.No)
+        temp.append(stu.name)
+        for act in acts:
+            try:
+                stuact = StudentActScore.objects.get(student=stu, act=act)
+                temp.append(stuact.score)
+            except StudentActScore.DoesNotExist:
+                temp.append(0)
+        stuactscore.append(temp)
+
+    wb = Workbook()
+    ws = wb.active
+    ws.title = 'New Title'
+    ws.cell(row=2, column=1).value = '学号'
+    ws.cell(row=2, column=2).value = '姓名'
+    i = 1
+    for act in acts:
+        ws.cell(row=2, column=2+i).value = act.title + '(' + act.created.strftime('%d/%m') + ')'
+        i = i + 1
+    m = 0
+
+    for ss in stuactscore:
+        m = m + 1
+        n = 0
+        for d in ss:
+            n = n + 1
+            ws.cell(row=2+m, column=n).value = d
+    max_col = ws.max_column
+    max_row = ws.max_row
+
+    ws.merge_cells(start_row=1, start_column=1, end_row=1, end_column=max_col)
+    ws.cell(row=1, column=1).value = scorename + "平时成绩"
+    ws.cell(row=1, column=1).font = Font(size=20)
+    ws.cell(row=1, column=1).alignment = Alignment(horizontal='center', vertical='center')
+
+    ws.cell(row=max_row+2, column=max_col-4).value = '班级：' + banji.name
+    ws.cell(row=max_row + 3, column=max_col - 4).value = '日期：' + time.strftime("%d/%m")
+
+    response = HttpResponse(content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="test.xls"'
+    wb.save(response)
+    return response
