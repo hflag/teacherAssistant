@@ -269,6 +269,7 @@ class ClassStudentActScoreView(View):
         scorename=scorename
         students = banji.student_set.all()
         acts = banji.act_set.all()
+        acts = acts.filter(teacher=request.user)
 
         stuactscore=[]
         for stu in students:
@@ -291,11 +292,12 @@ class ClassStudentActScoreView(View):
                                                            'scorename': scorename})
 
 
-def export_to_excel(request,banji_name, scorename):
+def export_to_excel(request, banji_name, scorename):
     banji = get_object_or_404(Banji, name=banji_name)
     scorename = scorename
     students = banji.student_set.all()
     acts = banji.act_set.all()
+    acts = acts.filter(teacher=request.user)
 
     stuactscore = []
     for stu in students:
@@ -335,8 +337,8 @@ def export_to_excel(request,banji_name, scorename):
     ws.cell(row=1, column=1).font = Font(size=20)
     ws.cell(row=1, column=1).alignment = Alignment(horizontal='center', vertical='center')
 
-    ws.cell(row=max_row+2, column=max_col-4).value = '班级：' + banji.name
-    ws.cell(row=max_row + 3, column=max_col - 4).value = '日期：' + time.strftime("%d/%m")
+    # ws.cell(row=max_row+2, column=max_col-4).value = '班级：' + banji.name
+    # ws.cell(row=max_row + 3, column=max_col - 4).value = '日期：' + time.strftime("%d/%m")
 
     response = HttpResponse(content_type='application/vnd.ms-excel')
     response['Content-Disposition'] = 'attachment; filename="test.xls"'

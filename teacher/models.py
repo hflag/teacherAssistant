@@ -25,6 +25,10 @@ class Student(models.Model):
 
 class Act(models.Model):
     # student = models.ManyToManyField(Student, related_name='joined_act', blank=True)
+    teacher = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                on_delete=models.CASCADE,
+                                verbose_name='任课教师',
+                                null=True, blank=True)
     banji = models.ForeignKey(Banji, on_delete=models.CASCADE, null=True, blank=True)
     title = models.CharField(max_length=100, verbose_name='活动题目')
     # score = models.FloatField(default=0)
