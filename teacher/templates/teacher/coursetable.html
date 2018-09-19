@@ -95,9 +95,8 @@
         </div>
     </header>
     <div class="container">
-        <div class="row ">
+        <div class="row">
             <div class="col-12">
-
                 <table class="table table-bordered d-none d-sm-block">
                     <thead>
                     <tr>
@@ -181,6 +180,7 @@
                     </tr>
                     </tbody>
                 </table>
+
                 <table class="table table-bordered d-block d-sm-none table-sm">
                     <thead>
                         <tr>
@@ -195,35 +195,35 @@
                             <tr>
                                 <th scope="row" rowspan="2">上午</th>
                                 <td>一</td>
-                                <td>{% if c %}{{ c.course_name }}, {{ c.room_name }}, <span class="d-block">{{ c.class_name }}</span> {% else %}*{% endif %}</td>
+                                <td>{% if c %}{{ c.course.name }}, {{ c.room_name }}, <span class="d-block">{{ c.banji.name }}</span> {% else %}*{% endif %}</td>
                             </tr>
                         {% elif forloop.counter == 2 %}
                             <tr>
                                 <td>二</td>
-                                <td>{% if c %}{{ c.course_name }}, {{ c.room_name }}, <span class="d-block">{{ c.class_name }}</span>{% else %}*{% endif %}</td>
+                                <td>{% if c %}{{ c.course.name }}, {{ c.room_name }}, <span class="d-block">{{ c.banji.name }}</span>{% else %}*{% endif %}</td>
                             </tr>
                         {% elif forloop.counter == 3 %}
                             <tr>
                                 <th scope="row" rowspan="2">下午</th>
                                 <td>三</td>
-                                <td>{% if c %}{{ c.course_name }}, {{ c.room_name }}, <span class="d-block">{{ c.class_name }}</span>{% else %}*{% endif %}</td>
+                                <td>{% if c %}{{ c.course.name }}, {{ c.room_name }}, <span class="d-block">{{ c.banji.name }}</span>{% else %}*{% endif %}</td>
                             </tr>
                         {% elif forloop.counter == 4 %}
                             <tr>
                                 <td>四</td>
-                                <td>{% if c %}{{ c.course_name }}, {{ c.room_name }}, <span class="d-block">{{ c.class_name }}</span>{% else %}*{% endif %}</td>
+                                <td>{% if c %}{{ c.course.name }}, {{ c.room_name }}, <span class="d-block">{{ c.banji.name }}</span>{% else %}*{% endif %}</td>
                             </tr>
                         {% elif forloop.counter == 5 %}
                             <tr>
                                 <th scope="row" rowspan="2">晚上</th>
                                 <td>五</td>
-                                <td>{% if c %}{{ c.course_name }}, {{ c.room_name }}, <span class="d-block">{{ c.class_name }}</span>{% else %}*{% endif %}</td>
+                                <td>{% if c %}{{ c.course.name }}, {{ c.room_name }}, <span class="d-block">{{ c.banji.name }}</span>{% else %}*{% endif %}</td>
                             </tr>
                         {% else %}
                             <tr>
 
                                 <td>六</td>
-                                <td>{% if c %}{{ c.course_name }}, {{ c.room_name }}, <span class="d-block">{{ c.class_name }}</span>{% else %}*{% endif %}</td>
+                                <td>{% if c %}{{ c.course.name }}, {{ c.room_name }}, <span class="d-block">{{ c.banji.name }}</span>{% else %}*{% endif %}</td>
                             </tr>
                         {% endif %}
                     {% endfor %}

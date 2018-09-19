@@ -106,10 +106,10 @@ class ClassActive(LoginRequiredMixin, View):
             today_courses = courses.filter(week=today)
             today_courses = self.modify_day_courses(today_courses)
 
-        before_course=None
-        current=time.strftime('%H')
-        if int(current)< 10:
-            before_course=today_courses[0]
+        before_course = None
+        current = time.strftime('%H')
+        if int(current) < 10:
+            before_course = today_courses[0]
         elif int(current) < 12:
             part_courses = today_courses[0:2]
             before_course = self.first_no_none(part_courses)
@@ -125,6 +125,13 @@ class ClassActive(LoginRequiredMixin, View):
         elif int(current) < 24:
             part_courses = today_courses[:]
             before_course = self.first_no_none(part_courses)
+
+        for cc in today_courses:
+            if cc != None:
+                first_course = cc
+                break
+        if before_course == None:
+            before_course = first_course
 
         # 获取当前上课班级的学生名单
         students = Student.objects.filter(banji=before_course.banji)[:]
@@ -197,7 +204,7 @@ class CourseTableView(LoginRequiredMixin, View):
                                                             'fours': fours,
                                                             'fives': fives,
                                                             'sixes': sixes,
-                                                            'today_courses': today_courses,
+                                                            'today_courses': today_courses
                                                             })
 
     def modify_courses(self, ones):
